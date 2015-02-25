@@ -1,0 +1,55 @@
+﻿@model List<TestDM.Models.User>
+
+<br>
+    Enter Name:<br>
+<input type="text" name="UserName" id="UserName" />
+
+
+<br>
+    Enter NickName:<br>
+<input type="text" name="UserNick" id="UserNick" />
+<input type="button" name="btnCheckName" id="btnCheckName" value="Check NickName"/>
+
+
+<br>
+<br>
+<input type="button" name="btnSave" id="btnSave" value="Save" />
+
+@section Scripts {
+<script>
+    $("#btnCheckName").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "ValidUserNick",
+            data: { nick: $("#UserNick").val() },
+            dataType: "json",
+            success: function (data) {
+                if (data == true) $("#UserNick").css('border', '2px solid green');
+                else $("#UserNick").css('border', '2px solid red');
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    });
+
+    $("#btnSave").click(function () {
+        $.ajax({
+            type: "POST",
+            url: "Save",
+            data: { name: $("#UserName").val(), nick: $("#UserNick").val() },
+            dataType: "json",
+            success: function (data) {
+                if (data > 0) { alert("success"); }
+                else {
+                    $("#UserNick").css('border', '2px solid red');
+                    alert("not valid UserNick!!");
+                }
+            },
+            error: function () {
+                alert("Error");
+            }
+        });
+    });
+</script>
+}
